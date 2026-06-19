@@ -4,6 +4,13 @@ import { registerSchema, loginSchema } from "./auth.validation.js";
 
 import { registerUser, loginUser } from "./auth.service.js";
 
+// import type{ AuthRequest } from "../middleware/authenticate.js";
+
+import { refreshUserToken, logoutUser } from "./auth.service.js";
+
+import { verifyRefreshToken } from "../utils/jwt.js";
+
+// register controller
 export const register = async (req: Request, res: Response) => {
   try {
     const data = registerSchema.parse(req.body);
@@ -25,6 +32,7 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
+// login controller
 export const login = async (req: Request, res: Response) => {
   try {
     const data = loginSchema.parse(req.body);
@@ -50,6 +58,50 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(401).json({
       message: error instanceof Error ? error.message : "Login failed",
+    });
+  }
+};
+
+// referesh controller
+export const refresh = async (req: Request, res: Response) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        message: "Refresh token missing",
+      });
+    }
+
+    const accessToken = await refreshUserToken(refreshToken);
+
+    res.status(200).json({ accessToken });
+  } catch {
+    res.status(401).json({
+      message: "Invalid refresh token",
+    });
+  }
+};
+
+// logout controller
+export const logout = async (req: Request, res: Response) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (refreshToken) {
+      const decoded = verifyRefreshToken(refreshToken);
+
+      await logoutUser(decoded.userId);
+    }
+
+    res.clearCookie("refreshToken");
+
+    res.status(200).json({
+      message: "Logged out successfully",
+    });
+  } catch {
+    res.status(200).json({
+      message: "Logged out successfully",
     });
   }
 };
