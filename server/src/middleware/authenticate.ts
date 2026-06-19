@@ -1,11 +1,16 @@
 import type { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { type JwtPayload } from "jsonwebtoken";
 
 export interface AuthRequest extends Request {
   user?: {
     userId: string;
     role: string;
   };
+}
+
+interface TokenPayload extends JwtPayload {
+  userId: string;
+  role: string;
 }
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -17,15 +22,23 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
     });
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1]!;
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET!) as {
-      userId: string;
-      role: string;
-    };
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET!);
 
-    req.user = decoded;
+    if (typeof decoded === "string") {
+      return res.status(401).json({
+        message: "Invalid token",
+      });
+    }
+
+    const payload = decoded as TokenPayload;
+
+    req.user = {
+      userId: payload.userId,
+      role: payload.role,
+    };
 
     next();
   } catch {
