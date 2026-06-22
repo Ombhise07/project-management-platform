@@ -10,6 +10,8 @@ import { refreshUserToken, logoutUser } from "./auth.service.js";
 
 import { verifyRefreshToken } from "../utils/jwt.js";
 
+import { prisma } from "../config/prisma.js";
+
 // register controller
 export const register = async (req: Request, res: Response) => {
   try {
@@ -102,6 +104,33 @@ export const logout = async (req: Request, res: Response) => {
   } catch {
     res.status(200).json({
       message: "Logged out successfully",
+    });
+  }
+};
+
+// For current user endpoint
+export const me = async (req: Request, res: Response) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json(user);
+  } catch {
+    res.status(404).json({
+      message: "User not found",
     });
   }
 };
