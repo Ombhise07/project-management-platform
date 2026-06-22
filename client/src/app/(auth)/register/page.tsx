@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,9 +9,18 @@ import { toast } from "sonner";
 import { registerSchema, RegisterFormData } from "@/lib/validations/auth";
 
 import { register } from "@/services/auth.service";
+import { useAuthStore } from "@/store/auth.store";
 
 export default function RegisterPage() {
   const router = useRouter();
+
+  const user = useAuthStore((state) => state.user);
+
+  useEffect(() => {
+    if (user) {
+      router.replace("/dashboard");
+    }
+  }, [user, router]);
 
   const {
     register: registerField,

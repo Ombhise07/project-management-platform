@@ -15,3 +15,7 @@ export const refresh = async () => {
 export const logout = async () => {
   return api.post("/auth/logout");
 };
+
+export const getCurrentUser = async () => {
+  return api.get("/auth/me");
+};

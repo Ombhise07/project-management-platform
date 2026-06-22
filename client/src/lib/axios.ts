@@ -18,3 +18,38 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes("/auth/refresh")
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        const response = await api.post("/auth/refresh");
+
+        const accessToken = response.data.accessToken;
+
+        useAuthStore.getState().setAccessToken(accessToken);
+
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+
+        return api(originalRequest);
+      } catch {
+        useAuthStore.getState().logout();
+
+        window.location.href = "/login";
+
+        return Promise.reject(error);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
