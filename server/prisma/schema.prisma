@@ -33,6 +33,8 @@ model User {
 
   attachments Attachment[]
 
+  notifications Notification[]
+
   refreshToken String?
 
   createdAt DateTime @default(now())
@@ -250,4 +252,29 @@ model Attachment {
   uploadedBy    User        @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
 
   createdAt     DateTime    @default(now())
+}
+
+enum NotificationType {
+  TASK_ASSIGNED
+  TASK_UPDATED
+  TASK_COMMENTED
+  PROJECT_INVITE
+  WORKSPACE_INVITE
+}
+
+model Notification {
+  id          String            @id @default(cuid())
+
+  title       String
+  message     String
+
+  type        NotificationType
+
+  isRead      Boolean           @default(false)
+
+  userId      String
+
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime          @default(now())
 }

@@ -16,6 +16,8 @@ import commentRoutes from "./comment/comment.routes.js";
 import path from "path";
 import attachmentRoutes from "./attachment/attachment.routes.js";
 
+import notificationRoutes from "./notification/notification.routes";
+
 const app = express();
 
 app.use(
@@ -42,6 +44,8 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/comments", commentRoutes);
 
 app.use("/api/attachments", attachmentRoutes);
+
+app.use("/api/notifications", notificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 

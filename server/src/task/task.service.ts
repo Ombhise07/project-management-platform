@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma.js";
+import { createNotification } from "../notification/notification.service.js";
 
 export const createTask = async (data: {
   title: string;
@@ -8,7 +9,7 @@ export const createTask = async (data: {
   dueDate?: string;
   priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 }) => {
-  return prisma.task.create({
+  const task = await prisma.task.create({
     data: {
       title: data.title,
 
@@ -27,6 +28,17 @@ export const createTask = async (data: {
       assignee: true,
     },
   });
+
+  if (data.assigneeId) {
+    await createNotification(
+      data.assigneeId,
+      "New Task Assigned",
+      `You have been assigned task ${task.title}`,
+      "TASK_ASSIGNED"
+    );
+  }
+
+  return task;
 };
 
 export const getProjectTasks = async (projectId: string) => {
@@ -54,7 +66,7 @@ export const updateTask = async (
     assigneeId?: string | null;
   }
 ) => {
-  return prisma.task.update({
+  const task = await prisma.task.update({
     where: {
       id: taskId,
     },
@@ -66,6 +78,17 @@ export const updateTask = async (
       subtasks: true,
     },
   });
+
+  if (data.status && task.assigneeId) {
+    await createNotification(
+      task.assigneeId,
+      "Task Updated",
+      `Task status changed to ${data.status}`,
+      "TASK_UPDATED"
+    );
+  }
+
+  return task;
 };
 
 export const deleteTask = async (taskId: string) => {
