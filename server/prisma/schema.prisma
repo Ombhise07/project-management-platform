@@ -31,6 +31,8 @@ model User {
   activityLogs ActivityLog[]
   comments Comment[]
 
+  attachments Attachment[]
+
   refreshToken String?
 
   createdAt DateTime @default(now())
@@ -147,6 +149,8 @@ model Task {
   status        TaskStatus      @default(TODO)
   priority      TaskPriority    @default(MEDIUM)
 
+  attachments Attachment[]
+
   dueDate       DateTime?
 
   projectId     String
@@ -222,4 +226,28 @@ model Comment {
 
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+}
+
+model Attachment {
+  id            String      @id @default(cuid())
+
+  fileName      String
+
+  originalName  String
+
+  mimeType      String
+
+  fileSize      Int
+
+  filePath      String
+
+  taskId        String
+
+  uploadedById  String
+
+  task          Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  uploadedBy    User        @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime    @default(now())
 }
