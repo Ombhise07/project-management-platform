@@ -28,6 +28,9 @@ model User {
   projectMemberships ProjectMember[]
   assignedTasks Task[] @relation("AssignedTasks")
 
+  activityLogs ActivityLog[]
+  comments Comment[]
+
   refreshToken String?
 
   createdAt DateTime @default(now())
@@ -156,6 +159,10 @@ model Task {
 
   subtasks      Subtask[]
 
+  activities ActivityLog[]
+
+  comments Comment[]
+
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
@@ -172,4 +179,47 @@ model Subtask {
   task         Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   createdAt    DateTime   @default(now())
+}
+
+enum ActivityType {
+  TASK_CREATED
+  TASK_UPDATED
+  TASK_ASSIGNED
+  TASK_STATUS_CHANGED
+  TASK_PRIORITY_CHANGED
+  SUBTASK_COMPLETED
+  COMMENT_CREATED
+}
+
+model ActivityLog {
+  id            String          @id @default(cuid())
+
+  type          ActivityType
+
+  message       String
+
+  userId        String
+  taskId        String?
+
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  task          Task?           @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime        @default(now())
+}
+
+model Comment {
+  id            String      @id @default(cuid())
+
+  content       String
+
+  taskId        String
+  authorId      String
+
+  task          Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  author        User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
