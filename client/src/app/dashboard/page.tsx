@@ -1,27 +1,47 @@
 "use client";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { logout } from "@/services/auth.service";
+import { getDashboard } from "@/services/dashboard.service";
 
 import { useAuthStore } from "@/store/auth.store";
 import { getCurrentUser } from "@/services/auth.service";
+
+interface DashboardData {
+  summary: {
+    totalProjects: number;
+    totalTasks: number;
+    completedTasks: number;
+    overdueTasks: number;
+  };
+}
 
 export default function DashboardPage() {
   const router = useRouter();
 
   const user = useAuthStore((state) => state.user);
   const clearAuth = useAuthStore((state) => state.logout);
-  const testRefresh = async () => {
-    const response = await getCurrentUser();
 
-    console.log(response.data);
-  };
+  const [dashboard, setDashboard] = useState<DashboardData | null>(null);
 
   useEffect(() => {
     if (!user) {
       router.replace("/login");
+      return;
     }
+
+    const loadDashboard = async () => {
+      try {
+        const response = await getDashboard();
+
+        setDashboard(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    loadDashboard();
   }, [user, router]);
 
   const handleLogout = async () => {
@@ -36,15 +56,39 @@ export default function DashboardPage() {
 
   return (
     <div className="p-8">
-      <h1 className="mb-4 text-3xl font-bold">Welcome, {user?.name}</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="mb-4 text-3xl font-bold">Welcome, {user?.name}</h1>
 
-      <button onClick={handleLogout} className="rounded bg-red-600 px-4 py-2 text-white">
-        Logout
-      </button>
+        <button onClick={handleLogout} className="rounded bg-red-600 px-4 py-2 text-white">
+          Logout
+        </button>
+      </div>
 
-      <button onClick={testRefresh} className="rounded bg-blue-600 px-4 py-2 text-white">
-        Test API
-      </button>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+        <div className="rounded border p-4 shadow">
+          <h2 className="text-sm text-gray-500">Total Projects</h2>
+
+          <p className="text-3xl font-bold">{dashboard?.summary.totalProjects ?? 0}</p>
+        </div>
+
+        <div className="rounded border p-4 shadow">
+          <h2 className="text-sm text-gray-500">Total Tasks</h2>
+
+          <p className="text-3xl font-bold">{dashboard?.summary.totalTasks ?? 0}</p>
+        </div>
+
+        <div className="rounded border p-4 shadow">
+          <h2 className="text-sm text-gray-500">Completed Tasks</h2>
+
+          <p className="text-3xl font-bold">{dashboard?.summary.completedTasks ?? 0}</p>
+        </div>
+
+        <div className="rounded border p-4 shadow">
+          <h2 className="text-sm text-gray-500">Overdue Tasks</h2>
+
+          <p className="text-3xl font-bold">{dashboard?.summary.overdueTasks ?? 0}</p>
+        </div>
+      </div>
     </div>
   );
 }
