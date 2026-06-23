@@ -10,6 +10,7 @@ import userRoutes from "./routes/user.routes.js";
 
 import workspaceRoutes from "./workspace/workspace.routes.js";
 import projectRoutes from "./project/project.routes.js";
+import taskRoutes from "./task/task.routes.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/workspaces", workspaceRoutes);
 app.use("/api/projects", projectRoutes);
+app.use("/api/tasks", taskRoutes);
 
 const PORT = process.env.PORT || 5000;
 

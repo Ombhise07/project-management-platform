@@ -26,6 +26,7 @@ model User {
 
   workspaces         WorkspaceMember[]
   projectMemberships ProjectMember[]
+  assignedTasks Task[] @relation("AssignedTasks")
 
   refreshToken String?
 
@@ -50,6 +51,20 @@ enum ProjectRole {
   OWNER
   MANAGER
   MEMBER
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
 }
 
 model Workspace {
@@ -88,6 +103,8 @@ model Project {
 
   status ProjectStatus @default(PLANNING)
 
+  tasks Task[]
+
   startDate DateTime?
   endDate   DateTime?
 
@@ -116,4 +133,43 @@ model ProjectMember {
   createdAt DateTime @default(now())
 
   @@unique([userId, projectId])
+}
+
+model Task {
+  id            String          @id @default(cuid())
+
+  title         String
+  description   String?
+
+  status        TaskStatus      @default(TODO)
+  priority      TaskPriority    @default(MEDIUM)
+
+  dueDate       DateTime?
+
+  projectId     String
+
+  project       Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  assigneeId    String?
+
+  assignee      User?           @relation("AssignedTasks", fields: [assigneeId], references: [id])
+
+  subtasks      Subtask[]
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Subtask {
+  id          String      @id @default(cuid())
+
+  title       String
+
+  completed   Boolean     @default(false)
+
+  taskId       String
+
+  task         Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime   @default(now())
 }
