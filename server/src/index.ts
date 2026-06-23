@@ -16,7 +16,9 @@ import commentRoutes from "./comment/comment.routes.js";
 import path from "path";
 import attachmentRoutes from "./attachment/attachment.routes.js";
 
-import notificationRoutes from "./notification/notification.routes";
+import notificationRoutes from "./notification/notification.routes.js";
+
+import dashboardRoutes from "./dashboard/dashboard.routes.js";
 
 const app = express();
 
@@ -46,6 +48,8 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/attachments", attachmentRoutes);
 
 app.use("/api/notifications", notificationRoutes);
+
+app.use("/api/dashboard", dashboardRoutes);
 
 const PORT = process.env.PORT || 5000;
 
