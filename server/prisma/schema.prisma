@@ -23,9 +23,57 @@ model User {
   email        String   @unique
   passwordHash String
   role         Role     @default(MEMBER)
+  
+  workspaces WorkspaceMember[]
 
   refreshToken String?
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+model Workspace {
+  id          String              @id @default(cuid())
+  name        String
+  description String?
+
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  members     WorkspaceMember[]
+  projects    Project[]
+}
+
+model WorkspaceMember {
+  id          String           @id @default(cuid())
+
+  userId      String
+  workspaceId String
+
+  role        WorkspaceRole    @default(MEMBER)
+
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace    Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime        @default(now())
+
+  @@unique([userId, workspaceId])
+}
+
+model Project {
+  id          String      @id @default(cuid())
+  name        String
+
+  workspaceId String
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
