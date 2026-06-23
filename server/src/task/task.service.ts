@@ -45,3 +45,54 @@ export const getProjectTasks = async (projectId: string) => {
     },
   });
 };
+
+export const updateTask = async (
+  taskId: string,
+  data: {
+    status?: string;
+    priority?: string;
+    assigneeId?: string | null;
+  }
+) => {
+  return prisma.task.update({
+    where: {
+      id: taskId,
+    },
+
+    data,
+
+    include: {
+      assignee: true,
+      subtasks: true,
+    },
+  });
+};
+
+export const deleteTask = async (taskId: string) => {
+  return prisma.task.delete({
+    where: {
+      id: taskId,
+    },
+  });
+};
+
+export const createSubtask = async (taskId: string, title: string) => {
+  return prisma.subtask.create({
+    data: {
+      taskId,
+      title,
+    },
+  });
+};
+
+export const completeSubtask = async (subtaskId: string) => {
+  return prisma.subtask.update({
+    where: {
+      id: subtaskId,
+    },
+
+    data: {
+      completed: true,
+    },
+  });
+};

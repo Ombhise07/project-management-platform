@@ -13,3 +13,17 @@ export const createTaskSchema = z.object({
 
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
 });
+
+export const updateTaskSchema = z.object({
+  status: z.enum(["TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"]).optional(),
+
+  priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
+
+  assigneeId: z.string().nullable().optional(),
+});
+
+export const createSubtaskSchema = z.object({
+  taskId: z.string(),
+
+  title: z.string().min(3),
+});
