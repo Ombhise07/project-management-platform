@@ -23,6 +23,7 @@ import dashboardRoutes from "./dashboard/dashboard.routes.js";
 import memberRoutes from "./member/member.routes.js";
 
 import calendarRoutes from "./calendar/calendar.routes.js";
+import timeRoutes from "./time/time.routes.js";
 
 const app = express();
 
@@ -58,6 +59,8 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
 app.use("/api/members", memberRoutes);
+
+app.use("/api/time", timeRoutes);
 
 const PORT = process.env.PORT || 5000;
 
