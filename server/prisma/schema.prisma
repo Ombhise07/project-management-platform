@@ -35,6 +35,8 @@ model User {
 
   notifications Notification[]
 
+  timeLogs TimeLog[]
+
   refreshToken String?
 
   createdAt DateTime @default(now())
@@ -152,6 +154,8 @@ model Task {
   priority      TaskPriority    @default(MEDIUM)
 
   attachments Attachment[]
+
+  timeLogs TimeLog[]
 
   dueDate       DateTime?
 
@@ -277,4 +281,21 @@ model Notification {
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt   DateTime          @default(now())
+}
+
+model TimeLog {
+  id          String      @id @default(cuid())
+
+  description String?
+
+  minutes     Int
+
+  taskId       String
+  userId       String
+
+  task         Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime   @default(now())
 }
