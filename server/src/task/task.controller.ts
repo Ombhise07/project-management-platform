@@ -8,6 +8,8 @@ import { updateTaskSchema, createSubtaskSchema } from "./task.validation.js";
 
 import { updateTask, deleteTask, createSubtask, completeSubtask } from "./task.service.js";
 
+import { getKanbanBoard } from "./task.service.js";
+
 export const create = async (req: Request, res: Response) => {
   try {
     const data = createTaskSchema.parse(req.body);
@@ -64,4 +66,10 @@ export const completeSubtaskHandler = async (req: Request, res: Response) => {
   const subtask = await completeSubtask(req.params.subtaskId);
 
   res.status(200).json(subtask);
+};
+
+export const getBoard = async (req: Request, res: Response) => {
+  const board = await getKanbanBoard(req.params.projectId);
+
+  res.status(200).json(board);
 };

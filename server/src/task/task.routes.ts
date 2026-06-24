@@ -9,6 +9,7 @@ import {
   remove,
   createSubtaskHandler,
   completeSubtaskHandler,
+  getBoard,
 } from "./task.controller.js";
 
 const router = Router();
@@ -18,6 +19,8 @@ router.use(authenticate);
 router.post("/", create);
 
 router.get("/", getAll);
+
+router.get("/board/:projectId", getBoard);
 
 router.patch("/:taskId", update);
 
