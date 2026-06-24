@@ -20,6 +20,8 @@ import notificationRoutes from "./notification/notification.routes.js";
 
 import dashboardRoutes from "./dashboard/dashboard.routes.js";
 
+import memberRoutes from "./member/member.routes.js";
+
 const app = express();
 
 app.use(
@@ -50,6 +52,8 @@ app.use("/api/attachments", attachmentRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 app.use("/api/dashboard", dashboardRoutes);
+
+app.use("/api/members", memberRoutes);
 
 const PORT = process.env.PORT || 5000;
 
