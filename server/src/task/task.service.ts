@@ -119,3 +119,25 @@ export const completeSubtask = async (subtaskId: string) => {
     },
   });
 };
+
+export const getKanbanBoard = async (projectId: string) => {
+  const tasks = await prisma.task.findMany({
+    where: {
+      projectId,
+    },
+
+    include: {
+      assignee: true,
+    },
+  });
+
+  return {
+    TODO: tasks.filter((task) => task.status === "TODO"),
+
+    IN_PROGRESS: tasks.filter((task) => task.status === "IN_PROGRESS"),
+
+    IN_REVIEW: tasks.filter((task) => task.status === "IN_REVIEW"),
+
+    DONE: tasks.filter((task) => task.status === "DONE"),
+  };
+};
