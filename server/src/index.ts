@@ -22,6 +22,8 @@ import dashboardRoutes from "./dashboard/dashboard.routes.js";
 
 import memberRoutes from "./member/member.routes.js";
 
+import calendarRoutes from "./calendar/calendar.routes.js";
+
 const app = express();
 
 app.use(
@@ -35,6 +37,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
+app.use("/api/calendar", calendarRoutes);
 
 app.get("/health", (_, res) => {
   res.json({ message: "API is running" });
