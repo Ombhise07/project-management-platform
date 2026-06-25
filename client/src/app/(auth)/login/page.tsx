@@ -1,15 +1,23 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
 
 import { loginSchema, LoginFormData } from "@/lib/validations/auth";
 
 import { login } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth.store";
+
+import { Button } from "@/components/ui";
+
+import { AuthLayout, AuthCard, AuthInput } from "@/components/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,35 +50,59 @@ export default function LoginPage() {
 
       toast.success("Logged in successfully");
 
-      router.push("/dashboard");
+      // router.push("/dashboard");
+      router.push(`/workspace`);
+      // router.push(`/workspace/${id}`);
     } catch {
       toast.error("Invalid email or password");
     }
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full max-w-md flex-col gap-4 rounded-lg border p-6"
-      >
-        <h1 className="text-2xl font-bold">Login</h1>
+    <AuthLayout>
+      <AuthCard>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-900">Welcome Back</h1>
 
-        <input placeholder="Email" {...register("email")} className="rounded border p-3" />
-        <p className="text-sm text-red-500">{errors.email?.message}</p>
+          <p className="mt-2 text-sm text-slate-500">Sign in to continue managing your projects.</p>
+        </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          {...register("password")}
-          className="rounded border p-3"
-        />
-        <p className="text-sm text-red-500">{errors.password?.message}</p>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <AuthInput
+            label="Email"
+            type="email"
+            placeholder="Enter your email"
+            icon={Mail}
+            registration={register("email")}
+            error={errors.email?.message}
+            autoComplete="email"
+          />
 
-        <button disabled={isSubmitting} className="rounded bg-black p-3 text-white">
-          {isSubmitting ? "Logging in..." : "Login"}
-        </button>
-      </form>
-    </main>
+          <AuthInput
+            label="Password"
+            type="password"
+            placeholder="Enter your password"
+            icon={Lock}
+            registration={register("password")}
+            error={errors.password?.message}
+            autoComplete="current-password"
+          />
+
+          <Button type="submit" loading={isSubmitting} fullWidth>
+            Sign In
+          </Button>
+        </form>
+
+        <div className="mt-8 text-center text-sm text-slate-600">
+          Don't have an account?{" "}
+          <Link
+            href="/register"
+            className="font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+          >
+            Create one
+          </Link>
+        </div>
+      </AuthCard>
+    </AuthLayout>
   );
 }

@@ -1,15 +1,11 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   1. Theme Configuration & Core Variables (Tailwind v4 Setup)
+   ========================================================================== */
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,12 +15,25 @@
   }
 }
 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui;
+  --font-mono: var(--font-geist-mono), ui-mono;
+}
+
+/* ==========================================================================
+   2. Baseline Element Resets
+   ========================================================================== */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans); /* Uses your elegant theme font */
 }
 
+/* ==========================================================================
+   3. React Big Calendar Custom Styling (Keep for calendar view consistency)
+   ========================================================================== */
 .rbc-calendar {
   background-color: white;
   color: black;
@@ -49,81 +58,62 @@ body {
 }
 
 /* ==========================================================================
-   gantt-task-react Library Custom Overrides
+   4. Gantt Task React Library Overrides (Scoped & Combined)
    ========================================================================== */
 
-/* 1. Main Grid and Row Containers */
-._3_Z9a {
-  background-color: #ffffff !important; /* Ensure clear background */
+/* Main Grid, Structural Containers and Wrapper Hooks */
+._3_Z9a, .gantt-container g {
+  background-color: #ffffff !important;
+  color: #0f172a;
 }
 
-/* 2. Text Color Overrides for Tasks, Dates, and Headers */
-._2M6x_ text, 
-._3666I text, 
-._17T0r text,
-.gantt-task-react-text,
-._27G3Z text {
-  fill: #1e293b !important; /* Slate 800 for strong text readability */
-  font-family: inherit !important;
-  font-weight: 500 !important;
-}
-
-/* 3. Header Styling */
-._3666I {
-  background-color: #f8fafc !important; /* Slate 50 row background */
-  border-bottom: 1px solid #e2e8f0 !important;
-}
-
-/* 4. Alternate Row Background Contrast */
+/* Alternate Row Contrast Backgrounds */
 ._3_Z9a:nth-child(even) {
   background-color: #f8fafc !important;
 }
 
-/* 5. Custom Styling for the Task Bars */
+/* Text Element Styling & Font Readability */
+._2M6x_ text, 
+._3666I text, 
+._17T0r text,
+._27G3Z text,
+.gantt-task-react-text,
+.gantt-container text,
+.gantt-container svg text {
+  fill: #1e293b !important; /* Force highly readable slate dark color */
+  font-family: var(--font-sans) !important;
+  font-weight: 500 !important;
+}
+
+/* Header Area Layout Rows */
+._3666I {
+  background-color: #f8fafc !important; 
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* Timeline Interactive Progress/Task Bar Renderers */
 rect._20m8v {
-  fill: #3b82f6 !important; /* Indigo/Blue bar background */
-  rx: 6px !important;       /* Modern rounded borders */
+  fill: #3b82f6 !important; /* Modern Indigo/Blue Bar background */
+  rx: 6px !important;       
   ry: 6px !important;
 }
 
-/* 6. Custom Styling for the Progress Fill Inner Bar */
 rect._16nKx {
-  fill: #1d4ed8 !important; /* Darker blue representing filled progress */
+  fill: #1d4ed8 !important; /* Progress Fill Inner Bar tint */
   rx: 6px !important;
   ry: 6px !important;
 }
 
-/* 7. Grid Column & Row Line Dividers */
+/* Layout Grid Dividers */
 line._20m8v, line._27G3Z, line._3_Z9a {
-  stroke: #e2e8f0 !important; /* Slate 200 grid lines */
+  stroke: #e2e8f0 !important;
 }
 
-/* 8. Tooltip Styling Fixes */
+/* Hover Information Tooltips */
 ._28p_X {
-  background: #0f172a !important; /* Slate 900 solid background */
+  background: #0f172a !important;
   color: #ffffff !important;
   border-radius: 8px !important;
   padding: 12px !important;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
-}
-
-/* ==========================================================================
-   Universal Gantt Chart SVG Fixes
-   ========================================================================== */
-
-/* Target text tags globally inside our container wrapper */
-.gantt-container text {
-  fill: #0f172a !important; /* Force deep slate black text color */
-  font-weight: 500 !important;
-}
-
-/* Fix background contrast inside row paths */
-.gantt-container g {
-  color: #0f172a;
-}
-
-/* Style the default calendar header text blocks */
-.gantt-container svg header,
-.gantt-container svg text {
-  fill: #1e293b !important;
 }
