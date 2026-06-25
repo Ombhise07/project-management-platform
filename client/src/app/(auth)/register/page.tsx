@@ -26,7 +26,7 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (user) {
-      router.replace("/dashboard");
+      router.replace("/workspace");
     }
   }, [user, router]);
 
