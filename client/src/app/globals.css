@@ -47,3 +47,83 @@ body {
 .rbc-today {
   background-color: #eff6ff;
 }
+
+/* ==========================================================================
+   gantt-task-react Library Custom Overrides
+   ========================================================================== */
+
+/* 1. Main Grid and Row Containers */
+._3_Z9a {
+  background-color: #ffffff !important; /* Ensure clear background */
+}
+
+/* 2. Text Color Overrides for Tasks, Dates, and Headers */
+._2M6x_ text, 
+._3666I text, 
+._17T0r text,
+.gantt-task-react-text,
+._27G3Z text {
+  fill: #1e293b !important; /* Slate 800 for strong text readability */
+  font-family: inherit !important;
+  font-weight: 500 !important;
+}
+
+/* 3. Header Styling */
+._3666I {
+  background-color: #f8fafc !important; /* Slate 50 row background */
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* 4. Alternate Row Background Contrast */
+._3_Z9a:nth-child(even) {
+  background-color: #f8fafc !important;
+}
+
+/* 5. Custom Styling for the Task Bars */
+rect._20m8v {
+  fill: #3b82f6 !important; /* Indigo/Blue bar background */
+  rx: 6px !important;       /* Modern rounded borders */
+  ry: 6px !important;
+}
+
+/* 6. Custom Styling for the Progress Fill Inner Bar */
+rect._16nKx {
+  fill: #1d4ed8 !important; /* Darker blue representing filled progress */
+  rx: 6px !important;
+  ry: 6px !important;
+}
+
+/* 7. Grid Column & Row Line Dividers */
+line._20m8v, line._27G3Z, line._3_Z9a {
+  stroke: #e2e8f0 !important; /* Slate 200 grid lines */
+}
+
+/* 8. Tooltip Styling Fixes */
+._28p_X {
+  background: #0f172a !important; /* Slate 900 solid background */
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+}
+
+/* ==========================================================================
+   Universal Gantt Chart SVG Fixes
+   ========================================================================== */
+
+/* Target text tags globally inside our container wrapper */
+.gantt-container text {
+  fill: #0f172a !important; /* Force deep slate black text color */
+  font-weight: 500 !important;
+}
+
+/* Fix background contrast inside row paths */
+.gantt-container g {
+  color: #0f172a;
+}
+
+/* Style the default calendar header text blocks */
+.gantt-container svg header,
+.gantt-container svg text {
+  fill: #1e293b !important;
+}

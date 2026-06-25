@@ -24,6 +24,7 @@ import memberRoutes from "./member/member.routes.js";
 
 import calendarRoutes from "./calendar/calendar.routes.js";
 import timeRoutes from "./time/time.routes.js";
+import ganttRoutes from "./gantt/gantt.routes.js";
 
 const app = express();
 
@@ -61,6 +62,8 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/members", memberRoutes);
 
 app.use("/api/time", timeRoutes);
+
+app.use("/api/gantt", ganttRoutes);
 
 const PORT = process.env.PORT || 5000;
 

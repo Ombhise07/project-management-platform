@@ -26,10 +26,10 @@ model User {
 
   workspaces         WorkspaceMember[]
   projectMemberships ProjectMember[]
-  assignedTasks Task[] @relation("AssignedTasks")
+  assignedTasks      Task[]            @relation("AssignedTasks")
 
   activityLogs ActivityLog[]
-  comments Comment[]
+  comments     Comment[]
 
   attachments Attachment[]
 
@@ -145,50 +145,57 @@ model ProjectMember {
 }
 
 model Task {
-  id            String          @id @default(cuid())
+  id String @id @default(cuid())
 
-  title         String
-  description   String?
+  title       String
+  description String?
 
-  status        TaskStatus      @default(TODO)
-  priority      TaskPriority    @default(MEDIUM)
+  status   TaskStatus   @default(TODO)
+  priority TaskPriority @default(MEDIUM)
 
   attachments Attachment[]
 
   timeLogs TimeLog[]
 
-  dueDate       DateTime?
+  startDate DateTime?
+  dueDate   DateTime?
 
-  projectId     String
+  progress Int @default(0)
 
-  project       Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
 
-  assigneeId    String?
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  assignee      User?           @relation("AssignedTasks", fields: [assigneeId], references: [id])
+  assigneeId String?
 
-  subtasks      Subtask[]
+  assignee User? @relation("AssignedTasks", fields: [assigneeId], references: [id])
+
+  subtasks Subtask[]
 
   activities ActivityLog[]
 
   comments Comment[]
 
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  dependencies TaskDependency[] @relation("TaskDependencies")
+
+  dependentOn TaskDependency[] @relation("TaskDependsOn")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Subtask {
-  id          String      @id @default(cuid())
+  id String @id @default(cuid())
 
-  title       String
+  title String
 
-  completed   Boolean     @default(false)
+  completed Boolean @default(false)
 
-  taskId       String
+  taskId String
 
-  task         Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
-  createdAt    DateTime   @default(now())
+  createdAt DateTime @default(now())
 }
 
 enum ActivityType {
@@ -202,60 +209,60 @@ enum ActivityType {
 }
 
 model ActivityLog {
-  id            String          @id @default(cuid())
+  id String @id @default(cuid())
 
-  type          ActivityType
+  type ActivityType
 
-  message       String
+  message String
 
-  userId        String
-  taskId        String?
+  userId String
+  taskId String?
 
-  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  task          Task?           @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  task Task? @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime        @default(now())
+  createdAt DateTime @default(now())
 }
 
 model Comment {
-  id            String      @id @default(cuid())
+  id String @id @default(cuid())
 
-  content       String
+  content String
 
-  taskId        String
-  authorId      String
+  taskId   String
+  authorId String
 
-  task          Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
-  author        User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Attachment {
-  id            String      @id @default(cuid())
+  id String @id @default(cuid())
 
-  fileName      String
+  fileName String
 
-  originalName  String
+  originalName String
 
-  mimeType      String
+  mimeType String
 
-  fileSize      Int
+  fileSize Int
 
-  filePath      String
+  filePath String
 
-  taskId        String
+  taskId String
 
-  uploadedById  String
+  uploadedById String
 
-  task          Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
-  uploadedBy    User        @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
+  uploadedBy User @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime    @default(now())
+  createdAt DateTime @default(now())
 }
 
 enum NotificationType {
@@ -267,35 +274,47 @@ enum NotificationType {
 }
 
 model Notification {
-  id          String            @id @default(cuid())
+  id String @id @default(cuid())
 
-  title       String
-  message     String
+  title   String
+  message String
 
-  type        NotificationType
+  type NotificationType
 
-  isRead      Boolean           @default(false)
+  isRead Boolean @default(false)
 
-  userId      String
+  userId String
 
-  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime          @default(now())
+  createdAt DateTime @default(now())
 }
 
 model TimeLog {
-  id          String      @id @default(cuid())
+  id String @id @default(cuid())
 
   description String?
 
-  minutes     Int
+  minutes Int
 
-  taskId       String
-  userId       String
+  taskId String
+  userId String
 
-  task         Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt    DateTime   @default(now())
+  createdAt DateTime @default(now())
+}
+
+model TaskDependency {
+  id String @id @default(cuid())
+
+  taskId String
+
+  dependsOnTaskId String
+
+  task Task @relation("TaskDependencies", fields: [taskId], references: [id], onDelete: Cascade)
+
+  dependsOn Task @relation("TaskDependsOn", fields: [dependsOnTaskId], references: [id], onDelete: Cascade)
 }

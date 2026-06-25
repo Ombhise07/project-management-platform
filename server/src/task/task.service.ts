@@ -6,6 +6,9 @@ export const createTask = async (data: {
   description?: string;
   projectId: string;
   assigneeId?: string;
+  status?: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE";
+  startDate?: string;
+  progress?: number;
   dueDate?: string;
   priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 }) => {
@@ -19,9 +22,15 @@ export const createTask = async (data: {
 
       assigneeId: data.assigneeId,
 
+      status: data.status,
+
       priority: data.priority,
 
+      startDate: data.startDate ? new Date(data.startDate) : undefined,
+
       dueDate: data.dueDate ? new Date(data.dueDate) : undefined,
+
+      progress: data.progress,
     },
 
     include: {
