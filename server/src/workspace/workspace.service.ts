@@ -31,7 +31,12 @@ export const getUserWorkspaces = async (userId: string) => {
     },
 
     include: {
-      members: true,
+      _count: {
+        select: {
+          members: true,
+          projects: true,
+        },
+      },
     },
   });
 };
