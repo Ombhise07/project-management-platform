@@ -51,7 +51,7 @@ export default function LoginPage() {
       toast.success("Logged in successfully");
 
       // router.push("/dashboard");
-      router.push(`/workspace`);
+      router.push("/workspace");
       // router.push(`/workspace/${id}`);
     } catch {
       toast.error("Invalid email or password");

@@ -1,5 +1,5 @@
 import { Workspace } from "@/types/workspace";
-
+import { WorkspaceCard } from "@/components/workspace";
 type Props = {
   workspaces: Workspace[];
   onWorkspaceClick: (id: string) => void;
