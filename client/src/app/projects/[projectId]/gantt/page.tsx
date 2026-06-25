@@ -8,10 +8,20 @@ import GanttChart from "@/components/gantt/GanttChart";
 
 import { getProjectTimeline } from "@/services/gantt.service";
 
+import { useProjectStore } from "@/store/project.store";
+
 export default function GanttPage() {
   const params = useParams();
 
   const projectId = params.projectId as string;
+
+  const setProjectId = useProjectStore((state) => state.setProjectId);
+
+  useEffect(() => {
+    if (projectId) {
+      setProjectId(projectId);
+    }
+  }, [projectId, setProjectId]);
 
   const [tasks, setTasks] = useState<any[]>([]);
 

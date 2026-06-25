@@ -26,6 +26,8 @@ import calendarRoutes from "./calendar/calendar.routes.js";
 import timeRoutes from "./time/time.routes.js";
 import ganttRoutes from "./gantt/gantt.routes.js";
 
+import reportRoutes from "./report/report.routes.js";
+
 const app = express();
 
 app.use(
@@ -51,6 +53,9 @@ app.use("/api/users", userRoutes);
 app.use("/api/workspaces", workspaceRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
+
+app.use("/api/reports", reportRoutes);
+
 app.use("/api/comments", commentRoutes);
 
 app.use("/api/attachments", attachmentRoutes);
