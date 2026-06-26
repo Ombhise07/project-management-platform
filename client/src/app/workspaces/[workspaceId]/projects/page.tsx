@@ -30,7 +30,7 @@ export default function ProjectsPage() {
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [workspaceName, setWorkspaceName] = useState("Workspace");
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [projectLoading, setProjectLoading] = useState(true);
 
   const [search, setSearch] = useState("");
@@ -55,7 +55,7 @@ export default function ProjectsPage() {
     }
 
     const loadWorkspaceData = async () => {
-      setLoading(true);
+      // setLoading(true);
 
       try {
         const workspaceResponse = await getWorkspaceById(workspaceId);
@@ -63,7 +63,7 @@ export default function ProjectsPage() {
       } catch (workspaceError) {
         console.error(workspaceError);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 

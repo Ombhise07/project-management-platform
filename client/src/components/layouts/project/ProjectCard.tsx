@@ -1,3 +1,7 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 import { Calendar, FolderKanban, Users } from "lucide-react";
 import { DashboardProject } from "@/types/dashboard"; // ← changed
 
@@ -6,8 +10,13 @@ interface Props {
 }
 
 export default function ProjectCard({ project }: Props) {
+  const router = useRouter();
+
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-lg">
+    <div
+      onClick={() => router.push(`/workspaces/${project.workspaceId}/projects/${project.id}`)}
+      className="cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-lg hover:border-blue-300"
+    >
       <div className="mb-6 flex items-start gap-4">
         <div className="rounded-xl bg-blue-100 p-3">
           <FolderKanban size={22} className="text-blue-600" />

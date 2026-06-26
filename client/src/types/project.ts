@@ -10,6 +10,12 @@ export interface ProjectMember {
   id: string;
   userId: string;
   role: "OWNER" | "MANAGER" | "MEMBER";
+
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
 export interface Project {

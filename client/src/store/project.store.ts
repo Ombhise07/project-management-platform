@@ -1,27 +1,56 @@
 import { create } from "zustand";
 
-type ProjectStore = {
-  projectId: string;
-  workspaceId: string;
+import { Project } from "@/types/project";
 
-  setProjectId: (projectId: string) => void;
+type ProjectStore = {
+  workspaceId: string;
+  projectId: string;
+
+  project: Project | null;
 
   setWorkspaceId: (workspaceId: string) => void;
+  setProjectId: (projectId: string) => void;
+
+  setProject: (project: Project | null) => void;
+
+  clearProject: () => void;
 
   clearSelection: () => void;
 };
 
 export const useProjectStore = create<ProjectStore>((set) => ({
-  projectId: "",
-
   workspaceId: "",
 
-  setProjectId: (projectId) => set({ projectId }),
+  projectId: "",
 
-  setWorkspaceId: (workspaceId) => set({ workspaceId }),
+  project: null,
+
+  setWorkspaceId: (workspaceId) =>
+    set({
+      workspaceId,
+    }),
+
+  setProjectId: (projectId) =>
+    set({
+      projectId,
+    }),
+
+  setProject: (project) =>
+    set({
+      project,
+      projectId: project?.id ?? "",
+      workspaceId: project?.workspaceId ?? "",
+    }),
+
+  clearProject: () =>
+    set({
+      project: null,
+      projectId: "",
+    }),
 
   clearSelection: () =>
     set({
+      project: null,
       projectId: "",
       workspaceId: "",
     }),
