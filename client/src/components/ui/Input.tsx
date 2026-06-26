@@ -33,7 +33,7 @@ export default function Input({
           className={clsx(
             "w-full rounded-xl border border-slate-300 bg-white py-3",
             Icon ? "pl-10 pr-4" : "px-4",
-            "text-sm transition-all",
+            "text-sm text-slate-900 placeholder:text-slate-400 transition-all",
             "focus:border-blue-600",
             "focus:outline-none",
             "focus:ring-4",

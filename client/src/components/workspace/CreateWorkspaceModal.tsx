@@ -6,20 +6,37 @@ import { Building2 } from "lucide-react";
 
 import { Button, Input, Modal } from "@/components/ui";
 
+import { createWorkspace } from "@/services/workspace.service";
+
 type Props = {
   open: boolean;
   onClose: () => void;
+  onCreated: (workspace: any) => void;
 };
 
-export default function CreateWorkspaceModal({ open, onClose }: Props) {
+export default function CreateWorkspaceModal({ open, onClose, onCreated }: Props) {
   const [workspaceName, setWorkspaceName] = useState("");
 
-  const handleCreate = () => {
-    // API will come later
+  const [loading, setLoading] = useState(false);
 
-    console.log(workspaceName);
+  const handleCreate = async () => {
+    if (!workspaceName.trim()) return;
 
-    onClose();
+    try {
+      const response = await createWorkspace({
+        name: workspaceName,
+      });
+
+      onCreated(response.data);
+
+      setWorkspaceName("");
+
+      onClose();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,8 +55,8 @@ export default function CreateWorkspaceModal({ open, onClose }: Props) {
             Cancel
           </Button>
 
-          <Button type="button" onClick={handleCreate}>
-            Create Workspace
+          <Button type="button" disabled={loading} onClick={handleCreate}>
+            {loading ? "Creating..." : "Create Workspace"}
           </Button>
         </div>
       </div>

@@ -28,6 +28,19 @@ export default function WorkspacePage() {
 
   const setWorkspaceId = useProjectStore((state) => state.setWorkspaceId);
 
+  const handleWorkspaceCreated = (workspace: any) => {
+    setWorkspaces((prev) => [
+      {
+        id: workspace.id,
+        name: workspace.name,
+        description: workspace.description ?? "No description",
+        projects: 0,
+        members: 1,
+      },
+      ...prev,
+    ]);
+  };
+
   useEffect(() => {
     const loadWorkspaces = async () => {
       try {
@@ -98,7 +111,11 @@ export default function WorkspacePage() {
         {workspaceContent}
       </div>
 
-      <CreateWorkspaceModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <CreateWorkspaceModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onCreated={handleWorkspaceCreated}
+      />
     </main>
   );
 }
