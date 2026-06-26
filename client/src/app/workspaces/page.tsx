@@ -79,7 +79,7 @@ export default function WorkspacePage() {
     );
   }
 
-  {
+  const workspaceContent =
     workspaces.length === 0 ? (
       <div className="mt-20 text-center">
         <h2 className="text-2xl font-semibold">No Workspaces Yet</h2>
@@ -89,14 +89,13 @@ export default function WorkspacePage() {
     ) : (
       <WorkspaceGrid workspaces={workspaces} onWorkspaceClick={handleWorkspaceClick} />
     );
-  }
 
   return (
     <main className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-7xl px-6 py-12">
         <WorkspaceHeader onCreateWorkspace={() => setModalOpen(true)} />
 
-        <WorkspaceGrid workspaces={workspaces} onWorkspaceClick={handleWorkspaceClick} />
+        {workspaceContent}
       </div>
 
       <CreateWorkspaceModal open={modalOpen} onClose={() => setModalOpen(false)} />

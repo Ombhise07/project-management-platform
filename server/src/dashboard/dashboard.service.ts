@@ -1,6 +1,6 @@
 import { prisma } from "../config/prisma.js";
 
-export const getDashboardData = async (userId: string) => {
+export const getDashboardData = async (userId: string, workspaceId: string) => {
   const now = new Date();
 
   const [
@@ -8,18 +8,33 @@ export const getDashboardData = async (userId: string) => {
     totalTasks,
     completedTasks,
     overdueTasks,
+    recentProjects,
     recentActivities,
     recentNotifications,
     taskStatusAnalytics,
     taskPriorityAnalytics,
   ] = await Promise.all([
-    prisma.project.count(),
+    prisma.project.count({
+      where: {
+        workspaceId,
+      },
+    }),
 
-    prisma.task.count(),
+    prisma.task.count({
+      where: {
+        project: {
+          workspaceId,
+        },
+      },
+    }),
 
     prisma.task.count({
       where: {
         status: "DONE",
+
+        project: {
+          workspaceId,
+        },
       },
     }),
 
@@ -28,14 +43,46 @@ export const getDashboardData = async (userId: string) => {
         dueDate: {
           lt: now,
         },
+
         status: {
           not: "DONE",
+        },
+
+        project: {
+          workspaceId,
         },
       },
     }),
 
+    prisma.project.findMany({
+      where: { workspaceId },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      include: {
+        members: {
+          where: { role: "OWNER" },
+          select: {
+            user: {
+              select: { id: true, name: true },
+            },
+          },
+          take: 1,
+        },
+        _count: { select: { tasks: true } },
+      },
+    }),
+
     prisma.activityLog.findMany({
+      where: {
+        task: {
+          project: {
+            workspaceId,
+          },
+        },
+      },
+
       take: 10,
+
       orderBy: {
         createdAt: "desc",
       },
@@ -56,11 +103,23 @@ export const getDashboardData = async (userId: string) => {
     prisma.task.groupBy({
       by: ["status"],
 
+      where: {
+        project: {
+          workspaceId,
+        },
+      },
+
       _count: true,
     }),
 
     prisma.task.groupBy({
       by: ["priority"],
+
+      where: {
+        project: {
+          workspaceId,
+        },
+      },
 
       _count: true,
     }),
@@ -78,6 +137,8 @@ export const getDashboardData = async (userId: string) => {
       taskStatusAnalytics,
       taskPriorityAnalytics,
     },
+
+    recentProjects,
 
     recentActivities,
 

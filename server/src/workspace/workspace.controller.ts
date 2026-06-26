@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 
 import { createWorkspaceSchema } from "./workspace.validation.js";
 
-import { createWorkspace, getUserWorkspaces } from "./workspace.service.js";
+import { createWorkspace, getUserWorkspaces, getWorkspaceById } from "./workspace.service.js";
 
 export const create = async (req: Request, res: Response) => {
   try {
@@ -22,4 +22,14 @@ export const getAll = async (req: Request, res: Response) => {
   const workspaces = await getUserWorkspaces(req.user!.userId);
 
   res.status(200).json(workspaces);
+};
+
+export const getById = async (req: Request, res: Response) => {
+  const workspace = await getWorkspaceById(req.params.workspaceId);
+
+  if (!workspace) {
+    return res.status(404).json({ message: "Workspace not found" });
+  }
+
+  res.status(200).json(workspace);
 };

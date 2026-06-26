@@ -7,6 +7,7 @@ import { getDashboard } from "@/services/dashboard.service";
 
 import { useAuthStore } from "@/store/auth.store";
 import { getCurrentUser } from "@/services/auth.service";
+import { useProjectStore } from "@/store/project.store";
 
 interface DashboardData {
   summary: {
@@ -14,6 +15,7 @@ interface DashboardData {
     totalTasks: number;
     completedTasks: number;
     overdueTasks: number;
+    recentProjects: Project[];
   };
 }
 
@@ -24,6 +26,7 @@ export default function DashboardPage() {
   const clearAuth = useAuthStore((state) => state.logout);
 
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
+  const { workspaceId } = useProjectStore((state) => state.workspaceId);
 
   useEffect(() => {
     if (!user) {
@@ -33,7 +36,7 @@ export default function DashboardPage() {
 
     const loadDashboard = async () => {
       try {
-        const response = await getDashboard();
+        const response = await getDashboard(workspaceId);
 
         setDashboard(response.data);
       } catch (error) {

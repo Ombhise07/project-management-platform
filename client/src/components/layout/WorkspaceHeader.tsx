@@ -15,7 +15,7 @@ export default function WorkspaceHeader({ workspaceName }: WorkspaceHeaderProps)
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
         <div className="flex items-center gap-5">
           <button
-            onClick={() => router.push("/workspace")}
+            onClick={() => router.push("/workspaces")}
             className="rounded-lg p-2 transition hover:bg-slate-100"
           >
             <ArrowLeft size={22} className="text-slate-700" />

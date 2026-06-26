@@ -40,3 +40,19 @@ export const getUserWorkspaces = async (userId: string) => {
     },
   });
 };
+
+export const getWorkspaceById = async (workspaceId: string) => {
+  return prisma.workspace.findUnique({
+    where: {
+      id: workspaceId,
+    },
+    include: {
+      _count: {
+        select: {
+          members: true,
+          projects: true,
+        },
+      },
+    },
+  });
+};

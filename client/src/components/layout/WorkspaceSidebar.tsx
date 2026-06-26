@@ -15,12 +15,12 @@ export default function WorkspaceSidebar({ workspaceId }: Props) {
   const links = [
     {
       label: "Dashboard",
-      href: `/workspace/${workspaceId}`,
+      href: `/workspaces/${workspaceId}`,
       icon: LayoutDashboard,
     },
     {
       label: "Projects",
-      href: `/workspace/${workspaceId}/projects`,
+      href: `/workspaces/${workspaceId}/projects`,
       icon: FolderKanban,
     },
   ];
@@ -31,7 +31,7 @@ export default function WorkspaceSidebar({ workspaceId }: Props) {
         {links.map((link) => {
           const Icon = link.icon;
 
-          const active = pathname === link.href;
+          const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
 
           return (
             <Link
