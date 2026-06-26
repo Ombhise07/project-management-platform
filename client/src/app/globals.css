@@ -1,119 +1,118 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   1. Theme Configuration & Core Variables (Tailwind v4 Setup)
+   Theme Configuration (Light Theme)
    ========================================================================== */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui;
   --font-mono: var(--font-geist-mono), ui-mono;
 }
 
 /* ==========================================================================
-   2. Baseline Element Resets
+   Base Styles
    ========================================================================== */
+
+html {
+  color-scheme: light;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans); /* Uses your elegant theme font */
+  font-family: var(--font-sans);
 }
 
 /* ==========================================================================
-   3. React Big Calendar Custom Styling (Keep for calendar view consistency)
+   React Big Calendar
    ========================================================================== */
+
 .rbc-calendar {
-  background-color: white;
-  color: black;
+  background: #ffffff;
+  color: #0f172a;
 }
 
 .rbc-toolbar button {
-  color: black;
+  color: #0f172a;
 }
 
 .rbc-header {
-  color: black;
+  color: #0f172a;
   padding: 8px;
 }
 
 .rbc-event {
-  background-color: #2563eb;
-  color: white;
+  background: #2563eb;
+  color: #ffffff;
 }
 
 .rbc-today {
-  background-color: #eff6ff;
+  background: #eff6ff;
 }
 
 /* ==========================================================================
-   4. Gantt Task React Library Overrides (Scoped & Combined)
+   Gantt Task React Overrides
    ========================================================================== */
 
-/* Main Grid, Structural Containers and Wrapper Hooks */
-._3_Z9a, .gantt-container g {
+._3_Z9a,
+.gantt-container g {
   background-color: #ffffff !important;
-  color: #0f172a;
+  color: #0f172a !important;
 }
 
-/* Alternate Row Contrast Backgrounds */
 ._3_Z9a:nth-child(even) {
   background-color: #f8fafc !important;
 }
 
-/* Text Element Styling & Font Readability */
-._2M6x_ text, 
-._3666I text, 
+._2M6x_ text,
+._3666I text,
 ._17T0r text,
 ._27G3Z text,
 .gantt-task-react-text,
 .gantt-container text,
 .gantt-container svg text {
-  fill: #1e293b !important; /* Force highly readable slate dark color */
+  fill: #1e293b !important;
   font-family: var(--font-sans) !important;
   font-weight: 500 !important;
 }
 
-/* Header Area Layout Rows */
 ._3666I {
-  background-color: #f8fafc !important; 
+  background-color: #f8fafc !important;
   border-bottom: 1px solid #e2e8f0 !important;
 }
 
-/* Timeline Interactive Progress/Task Bar Renderers */
 rect._20m8v {
-  fill: #3b82f6 !important; /* Modern Indigo/Blue Bar background */
-  rx: 6px !important;       
-  ry: 6px !important;
-}
-
-rect._16nKx {
-  fill: #1d4ed8 !important; /* Progress Fill Inner Bar tint */
+  fill: #3b82f6 !important;
   rx: 6px !important;
   ry: 6px !important;
 }
 
-/* Layout Grid Dividers */
-line._20m8v, line._27G3Z, line._3_Z9a {
+rect._16nKx {
+  fill: #1d4ed8 !important;
+  rx: 6px !important;
+  ry: 6px !important;
+}
+
+line._20m8v,
+line._27G3Z,
+line._3_Z9a {
   stroke: #e2e8f0 !important;
 }
 
-/* Hover Information Tooltips */
 ._28p_X {
   background: #0f172a !important;
   color: #ffffff !important;
   border-radius: 8px !important;
   padding: 12px !important;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
 }
