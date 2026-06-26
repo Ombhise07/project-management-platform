@@ -3,14 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { WorkspaceLayout } from "@/components/layout";
+import { WorkspaceLayout } from "@/components/layouts/workspace";
 
 import {
   ProjectsHeader,
   ProjectsGrid,
   EmptyProjects,
   CreateProjectModal,
-} from "@/components/dashboard";
+} from "@/components/layouts/project";
 
 import { getWorkspaceProjects } from "@/services/project.service";
 import { getWorkspaceById } from "@/services/workspace.service";

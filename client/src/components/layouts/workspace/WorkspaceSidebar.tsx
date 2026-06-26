@@ -31,7 +31,10 @@ export default function WorkspaceSidebar({ workspaceId }: Props) {
         {links.map((link) => {
           const Icon = link.icon;
 
-          const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+          const active =
+            link.label === "Dashboard"
+              ? pathname === link.href
+              : pathname === link.href || pathname.startsWith(`${link.href}/`);
 
           return (
             <Link

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
-import { WorkspaceLayout } from "@/components/layout";
+import { WorkspaceLayout } from "@/components/layouts/workspace";
 
 import { StatsGrid, RecentProjects } from "@/components/dashboard";
 

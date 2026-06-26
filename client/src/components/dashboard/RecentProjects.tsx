@@ -1,5 +1,5 @@
 import { DashboardProject } from "@/types/dashboard"; // ← change import
-import ProjectCard from "./ProjectCard";
+import ProjectCard from "../layouts/project/ProjectCard";
 
 interface Props {
   projects: DashboardProject[]; // ← use DashboardProject, not Project

@@ -1,6 +1,6 @@
 "use client";
 
-import { Navbar } from "@/components/layout";
+import { Navbar } from "@/components/layouts/workspace";
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   return (
