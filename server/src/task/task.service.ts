@@ -150,3 +150,16 @@ export const getKanbanBoard = async (projectId: string) => {
     DONE: tasks.filter((task) => task.status === "DONE"),
   };
 };
+
+export const getTaskById = async (taskId: string) => {
+  return prisma.task.findUnique({
+    where: {
+      id: taskId,
+    },
+
+    include: {
+      assignee: true,
+      subtasks: true,
+    },
+  });
+};

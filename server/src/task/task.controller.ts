@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 
 import { createTaskSchema } from "./task.validation.js";
 
-import { createTask, getProjectTasks } from "./task.service.js";
+import { createTask, getProjectTasks, getTaskById } from "./task.service.js";
 
 import { updateTaskSchema, createSubtaskSchema } from "./task.validation.js";
 
@@ -72,4 +72,16 @@ export const getBoard = async (req: Request, res: Response) => {
   const board = await getKanbanBoard(req.params.projectId);
 
   res.status(200).json(board);
+};
+
+export const getOne = async (req: Request, res: Response) => {
+  const task = await getTaskById(req.params.taskId);
+
+  if (!task) {
+    return res.status(404).json({
+      message: "Task not found",
+    });
+  }
+
+  res.status(200).json(task);
 };

@@ -10,6 +10,7 @@ import {
   createSubtaskHandler,
   completeSubtaskHandler,
   getBoard,
+  getOne,
 } from "./task.controller.js";
 
 const router = Router();
@@ -21,6 +22,8 @@ router.post("/", create);
 router.get("/", getAll);
 
 router.get("/board/:projectId", getBoard);
+
+router.get("/:taskId", getOne);
 
 router.patch("/:taskId", update);
 
