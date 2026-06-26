@@ -28,6 +28,19 @@ export default function WorkspacePage() {
 
   const setWorkspaceId = useProjectStore((state) => state.setWorkspaceId);
 
+  const handleWorkspaceCreated = (workspace: any) => {
+    setWorkspaces((prev) => [
+      {
+        id: workspace.id,
+        name: workspace.name,
+        description: workspace.description ?? "No description",
+        projects: 0,
+        members: 1,
+      },
+      ...prev,
+    ]);
+  };
+
   useEffect(() => {
     const loadWorkspaces = async () => {
       try {
@@ -79,7 +92,7 @@ export default function WorkspacePage() {
     );
   }
 
-  {
+  const workspaceContent =
     workspaces.length === 0 ? (
       <div className="mt-20 text-center">
         <h2 className="text-2xl font-semibold">No Workspaces Yet</h2>
@@ -89,17 +102,20 @@ export default function WorkspacePage() {
     ) : (
       <WorkspaceGrid workspaces={workspaces} onWorkspaceClick={handleWorkspaceClick} />
     );
-  }
 
   return (
     <main className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-7xl px-6 py-12">
         <WorkspaceHeader onCreateWorkspace={() => setModalOpen(true)} />
 
-        <WorkspaceGrid workspaces={workspaces} onWorkspaceClick={handleWorkspaceClick} />
+        {workspaceContent}
       </div>
 
-      <CreateWorkspaceModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <CreateWorkspaceModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onCreated={handleWorkspaceCreated}
+      />
     </main>
   );
 }

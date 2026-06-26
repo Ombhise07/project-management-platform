@@ -104,3 +104,24 @@ export const removeProjectMember = async (projectId: string, userId: string) => 
     },
   });
 };
+
+export const getProjectById = async (projectId: string) => {
+  return prisma.project.findUnique({
+    where: {
+      id: projectId,
+    },
+    include: {
+      members: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};

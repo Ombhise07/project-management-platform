@@ -29,7 +29,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      router.replace("/dashboard");
+      router.replace("/workspaces");
     }
   }, [user, router]);
 
@@ -51,7 +51,7 @@ export default function LoginPage() {
       toast.success("Logged in successfully");
 
       // router.push("/dashboard");
-      router.push("/workspace");
+      router.push("/workspaces");
       // router.push(`/workspace/${id}`);
     } catch {
       toast.error("Invalid email or password");
